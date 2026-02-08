@@ -461,20 +461,31 @@ my chaand, my beautiful, my forever.<br>
 
 /* BOX LOGIC */
 function setupBoxes(){
-  const today=new Date();today.setHours(0,0,0,0);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
   document.querySelectorAll(".box").forEach(box=>{
-    const date=box.dataset.date;
-    const unlocked=PREVIEW_MODE||today>=new Date(date);
-    box.querySelector(".lock").innerText=unlocked?"❤️🔓":"❤️🔒";
-    box.onclick=()=>{
+    const [y, m, d] = box.dataset.date.split("-");
+    const boxDate = new Date(y, m - 1, d); // LOCAL date
+    boxDate.setHours(0,0,0,0);
+
+    const unlocked = PREVIEW_MODE || today >= boxDate;
+
+    box.querySelector(".lock").innerText = unlocked ? "❤️🔓" : "❤️🔒";
+
+    box.onclick = () => {
       if(!unlocked){
         openModal("😏 Patience... Good things take time 💕");
         return;
       }
-      openModal(surprises[date]||"Your surprise ❤️", date==="2026-02-14");
+      openModal(
+        surprises[box.dataset.date] || "Your surprise ❤️",
+        box.dataset.date === "2026-02-14"
+      );
     };
   });
 }
+
 
 /* ✨ FLOATING WORDS */
 function createFloatingWords(){
@@ -557,3 +568,4 @@ function stopHeartGame() {
 </body>
 
 </html>
+
