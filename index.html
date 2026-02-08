@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Valentine ❤️</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow, noarchive">
+
+<style>
+:root{
+  --red:#e11d48;
+  --pink:#ffe4e6;
+  --rose:#fb7185;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html, body{
+  margin:0;
+  max-width:100%;
+  overflow-x:hidden;
+  background:linear-gradient(180deg,#fff,var(--pink));
+  color:var(--red);
+  min-height:100vh;
+}
+
+/* 💗 HEART BLOOM */
+.heart{
+  position:fixed;
+  pointer-events:none;
+  z-index:3000;
+  animation:bloom .8s ease-out forwards;
+}
+
+@keyframes bloom{
+  0%{transform:scale(.6);opacity:1;}
+  100%{
+    transform:translate(var(--x),var(--y)) scale(var(--s));
+    opacity:0;
+  }
+}
+
+/* LOCK SCREEN */
+#lockScreen{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:32px;
+  position:relative;
+}
+
+#lockScreen h1{font-size:3rem;margin:0;}
+#lockScreen p{color:var(--rose);font-size:1.2rem;}
+
+input,button{
+  width:90%;
+  max-width:260px;
+  padding:14px;
+  border-radius:30px;
+  border:none;
+  margin-top:18px;
+  text-align:center;
+  font-size:1rem;
+}
+
+button{
+  background:var(--rose);
+  color:white;
+  cursor:pointer;
+}
+
+/* FLOATING WORDS */
+.word{
+  position:absolute;
+  color:var(--rose);
+  pointer-events:none;
+  user-select:none;
+  animation:floatWord linear forwards;
+}
+
+@keyframes floatWord{
+  from{transform:translateY(110vh);}
+  to{transform:translateY(-20vh);opacity:0;}
+}
+
+/* INTRO */
+#introScreen{
+  display:none;
+  min-height:100vh;
+  padding:32px;
+  text-align:center;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+/* CONTENT */
+#content{display:none;padding:20px;}
+
+.days{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+
+.box{
+  background:white;
+  border-radius:26px;
+  padding:26px;
+  text-align:center;
+  box-shadow:0 14px 30px rgba(0,0,0,.08);
+  cursor:pointer;
+}
+
+.lock{font-size:2.2rem;margin-top:14px;}
+.date{font-size:.9rem;opacity:.7}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:2000;
+}
+
+.modal-content{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0.7);
+  background:white;
+  padding:30px;
+  border-radius:26px;
+  width:90%;
+  max-width:480px;
+  text-align:center;
+  height:auto;
+  max-height:85vh;
+  overflow-y:auto;
+  opacity:0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.modal-content.show{
+  transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+}
+
+.modal-content.valentine{
+  background:linear-gradient(180deg,#fff,var(--pink));
+  box-shadow:0 0 50px rgba(225,29,72,.45);
+}
+
+#modalInner{
+  line-height:1.7;
+  font-size:1.05rem;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.modal-content::-webkit-scrollbar{
+  width:6px;
+}
+.modal-content::-webkit-scrollbar-thumb{
+  background:var(--rose);
+  border-radius:10px;
+}
+
+.close{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:var(--rose);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.4rem;
+  cursor:pointer;
+}
+
+/* 💐 FLOATING SHOWER */
+.floating{
+  position:fixed;
+  top:-50px;
+  pointer-events:none;
+  z-index:2500;
+  animation:fall linear forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(120vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+/* 💖 HEART-TAP SCORE POP */
+.scorePop {
+  position: absolute;
+  color: #fb7185;
+  font-weight: bold;
+  pointer-events: none;
+  font-size: 1.2rem;
+  animation: popUp 0.8s ease-out forwards;
+}
+
+@keyframes popUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-40px) scale(1.5); opacity: 0; }
+}
+
+/* MINI HEART-TAP GAME HEART STYLE */
+.gameHeart {
+  position: absolute;
+  cursor: pointer;
+  user-select: none;
+  font-size: 30px;
+  transition: transform 0.2s ease;
+}
+.gameHeart:hover {
+  transform: scale(1.3);
+}
+</style>
+</head>
+
+<body>
+
+<div id="lockScreen">
+  <h1>❤️</h1>
+  <p>Made only for you</p>
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="checkPassword()">Enter</button>
+  <div id="error"></div>
+</div>
+
+<div id="introScreen">
+  <p>
+    Hey my love 💌<br><br>
+    Every day until Valentine’s Day has a little surprise for you.<br>
+    Open them slowly… ❤️
+  </p>
+  <button onclick="enterSite()">Let me see 💖</button>
+</div>
+
+<div id="content">
+  <div class="days">
+    <div class="box" data-date="2026-02-07"><h2>Rose Day</h2><div class="date">7 Feb</div><div class="lock">❤️🔒</div></div>
+    <div class="box" data-date="2026-02-08"><h2>Propose Day</h2><div class="date">8 Feb</div><div class="lock">❤️🔒</div></div>
+    <div class="box" data-date="2026-02-09"><h2>Chocolate Day</h2><div class="date">9 Feb</div><div class="lock">❤️🔒</div></div>
+    <div class="box" data-date="2026-02-10"><h2>Teddy Day</h2><div class="date">10 Feb</div><div class="lock">❤️🔒</div></div>
+    <div class="box" data-date="2026-02-11"><h2>Promise Day</h2><div class="date">11 Feb</div><div class="lock">❤️🔒</div></div>
+    <div class="box" data-date="2026-02-12"><h2>Hug Day</h2><div class="date">12 Feb</div><div class="lock">❤️🔒</div></div>
+    <div class="box" data-date="2026-02-13"><h2>Kiss Day</h2><div class="date">13 Feb</div><div class="lock">❤️🔒</div></div>
+    <div class="box" data-date="2026-02-14"><h2>Valentine’s Day</h2><div class="date">14 Feb</div><div class="lock">❤️🔒</div></div>
+  </div>
+</div>
+
+<div id="modal" class="modal">
+  <div id="modalBox" class="modal-content">
+    <span class="close" onclick="closeModal()">×</span>
+    <div id="modalInner"></div>
+  </div>
+</div>
+
+<!-- Voice Note -->
+<audio id="voiceNote" src="her.m4a"></audio>
+
+<script>
+const PREVIEW_MODE = false;
+const correctPassword = "MyBiwiJi";
+let showerInterval;
+
+/* 💗 HEART BLOOM */
+function bloom(x,y){
+  for(let i=0;i<8;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerText="💗";
+    h.style.left=x+"px";
+    h.style.top=y+"px";
+    h.style.setProperty("--x",(Math.random()*140-70)+"px");
+    h.style.setProperty("--y",(Math.random()*-160)+"px");
+    h.style.setProperty("--s",(0.6+Math.random()*0.6));
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),800);
+  }
+}
+
+["click","touchstart"].forEach(evt=>{document.addEventListener(evt,e=>{const p=e.touches?e.touches[0]:e;bloom(p.clientX,p.clientY);});});
+
+/* PASSWORD */
+function checkPassword(){
+  if(password.value===correctPassword){
+    lockScreen.style.display="none";
+    introScreen.style.display="flex";
+    startHeartGame(); // start mini-game
+  } else error.innerText="Try again ❤️";
+}
+
+function enterSite(){
+  introScreen.style.display="none";
+  content.style.display="block";
+  setupBoxes();
+}
+
+/* 💐 SHOWER */
+function startShower(valentine=false){
+  const emojis = valentine ? ["❤️","💗","🌹","💐","💖"] : ["💗","❤️","🌹"];
+  showerInterval=setInterval(()=>{
+    const el=document.createElement("div");
+    el.className="floating";
+    el.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.left=Math.random()*100+"vw";
+    el.style.fontSize=(valentine?30:22)+"px";
+    el.style.animationDuration=(valentine?6:8)+"s";
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),9000);
+  }, valentine?200:600);
+}
+
+function stopShower(){ clearInterval(showerInterval); }
+
+function openModal(text,valentine=false){
+  modal.style.display="block";
+  modalInner.innerHTML = text; // Use innerHTML for button insertion
+  modalBox.classList.toggle("valentine",valentine);
+  modalBox.classList.remove("show");
+  setTimeout(()=> modalBox.classList.add("show"),10);
+  if(valentine) startShower(true);
+}
+
+function closeModal(){
+  modal.style.display="none";
+  stopShower();
+}
+
+/* 💌 SURPRISES */
+const surprises = {
+  "2026-02-07": `
+  A rose for you today 🌹, but honestly, you deserve far more than flowers.
+  You have a way of making my world softer and brighter just by being in it.
+  Your smile calms me in ways I can’t explain.
+  Every moment with you feels special, even the quiet ones.
+  I’m grateful for your heart, your patience, and your love.
+  You make ordinary days feel magical.
+  And today, I’m reminding you how deeply cherished you are ❤️
+  `,
+
+  "2026-02-08": `
+  If love had a name, it would sound like yours.
+  Choosing you was never a question for me, it was always the answer.
+  You feel like home, no matter where I am.
+  Your presence brings peace to my chaos.
+  I admire your strength, your kindness, and your beautiful soul.
+  Loving you feels natural and effortless.
+  And I’d choose you again, in every lifetime 💍
+  `,
+
+  "2026-02-09": `
+  Today is about sweetness, but you redefine what sweet really means 🍫.
+  (Yes the kiss is also the sweetest but there is more about you I find sweet)
+  The way you care, the way you love, the way you understand me.
+  Your laughter is my favorite sound.
+  You fill my heart in ways nothing else ever could.
+  Even on my hardest days, you make things lighter (honestly).
+  Life feels warmer with you in it.
+  And my heart belongs to you, always ❤️
+  `,
+
+  "2026-02-10": `
+  Happy Teddy Day 🧸, my squirrel.
+  You are the place I would love to go when I need warmth and safety.
+  Just thinking about you brings me peace.
+  I wish I could wrap you in the tightest hug right now like just squish you.
+  You make me feel understood without saying a word.
+  Being with you feels gentle and secure.
+  And I hope you always know I’m here for you only you 💖
+  `,
+
+  "2026-02-11": `
+  Promise Day means more to me than words can say 🤍.
+  I promise to stand by you, even when things aren’t easy.
+  I promise to listen, to understand, and to grow with you.
+  I promise to respect your heart and your dreams.
+  I promise to support you in every phase of life.
+  I won’t be perfect, but I’ll be honest and loyal.
+  And most of all, I promise to love you sincerely 💫
+  `,
+
+  "2026-02-12": `
+  Sending you the warmest bhaalu hug today 🤗.
+  A hug that says you’re safe with me.
+  A hug that holds you through stress, fear, and doubt.
+  A hug that reminds you you’re never alone.
+  I wish I could pull you close and stay there a while.
+  Just breathing together, heart to heart.
+  Until then, feel my love wrapped around you ❤️
+  `,
+
+  "2026-02-13": `
+  Kiss Day feels incomplete without you 😘.
+  A soft kiss to tell you how much you mean to me.
+  A slow kiss to remind you how loved you are.
+  A gentle one for comfort and warmth.
+  A playful one just to see you smile.
+  Every kiss carries all my feelings for you.
+  And there are many more waiting just for you my cutie pie.
+  `,
+  "2026-02-14": `
+  Happiest Valentine Day Madam ji!! toh I am not going to be formal jaise baaki din tha..but jo likha tha I did mean it all...Idk kahan se start karu...lets just go simple and honest...Pragya..I love You from the depth of my heart...mujhe nahi pata kya hua kaise hua..but jaise bhi hua I am glad about it..pata hai..when I first saw you like first eye contact..mai..mai vahi melt hogaya tha..I can still recall that time like it was yesterday...phir slowly slowly...I was getting to know about you...from friends..teacher..from you too..and I just fell for the most gorgeous women I could ever imagine..the way you speak..the smile..the laughter..aur aur jab gussa hoti ho(tum bohooot cute lagti ho..like choti si squirrel gussa hogayi..aww)..phir 10th ki fights..awkward moments..remember jab aku aur prakhar ne hum dono saath baitha diya tha aur mujhe khena tha "mujhe bhai mat bola karo" but I took wayyy to long..pata hai how nervous I got at that point..kyunki just looking at you would make me blush hard at that moment...khair..then...October to was the best month for me..29th Oct 2025..12:10 PM..you proposed to me!!..at first I was confused rethinking "is she for real".."isko dare mila hai kya"..."ye 2 din phele to sure nahi thi"...then tumhe to pata hi hai kitni baar maine pucha are you for real or not...well I am glad..I said yes (kyunki mind mein tha mana kardeta hun)..then that 1 week...jitna aapne mujhe pareshan kiya if its a good idea or not..I was like..agar sure nahi thi to bola hi kyu..chhodo..I hope you are happy that we gave each other a chance cause I am wayyy too happy...then after that..our very first hand hold..my god...mujhe nahi laga tha you would actually hold my hand..I was like risk le leta hun...but the moment you held it..uff..meri heartbeat jitni fast hui thi..I mean pura feel ho raha tha ki ok dil hai to mere pass..and and..jab maine tumhe madam bola tha aku ne sun liya tha kitni jealous hoagyi thi vo...maje aaye the uska face dekh ke..phir to kya kya nahi hua aur abhi bhi chal hi raha hai..parents teachers friends..har koi alag karne pe hi laga hua hai..but I am just really glad we did not got seperate..I was so shocked ki you are really here with me..after all the things..matlab I thougth aaj ke time itna kuch hone ke baad kon hi rukta hai kisi ke liye but you did..this made me realise that what a great women i have got (and..i have a good taste in women hehe)..pata hai..I enjoy giving you names jispe you say "bas bhi karo" or you get red..like..snacky snacky..my sexy addiction..etc if any..beacuse you just look more beautiful when you smile..and a cherry on top is the redness..killing combo..lekin tumhe dekhta hun to tum  dekhne hi nahi deti...aur ab to dekh bhi nahi sakta..well pata hai..abhi recently tumne apne hair tie nahi kiye the..I saw you socho kya hua hoga...me..literally girne laga tha..kt tha to gira nahi but I was like ye kya hua abhi..aur aur mai kuch bol nahi raha tha kt ne 2 baar pucha..me just replaying that scene over and over again...baad mein kahin jaake mai hosh mein aaya (dekha kitna jyada effect hai tumhara mujhpe)..pata hai kya..idk how should I end it...cause it will never end..these 15 months..are my best memories cause I have a person who truly is mine..my Pragya..today..its not about anything materialistic..but about how you have settled in my heart..about how much you mean to me...ye mai explain karte karte hi buddha hojaaunga..Pragya..jaanu..You Are The Everything I Ever Asked For..I Love You..<br>
+<br>
+Oh haa..you said a poem was your favorite had moon or something..I could not find the exact one since sab delete hogaya hai but i did wrote a new one..hope  you like it<br>
+<br>
+<br>
+ <b>My Chaand</b><br>
+ You move through my world like moonlight on water,<br>
+soft, unannounced, impossibly bright.<br>
+Even the quiet parts of me glow<br>
+when you’re near<br>
+as if the night itself learned your name.<br>
+
+You are the moon in all her phases<br>
+gentle crescent smiles, fearless full light,<br>
+beautiful even when half-hidden,<br>
+teaching me that nothing real<br>
+needs to be perfect to be breathtaking.<br>
+
+When the world grows heavy and dark,<br>
+I look for you the way oceans look upward<br>
+trusting you’ll pull my heart back into rhythm,<br>
+steady my tides,<br>
+remind me who I am when I forget.<br>
+
+Loving you feels ancient, written into the sky,<br>
+like the moon was always meant to find the earth.<br>
+No distance dulls it, no silence weakens it<br>
+my love circles you endlessly,<br>
+faithful, patient, sure.<br>
+
+If I could give you anything this Valentine’s Day,<br>
+it would be this truth:<br>
+that in every lifetime, in every night sky,<br>
+I would still choose you<br>
+my chaand, my beautiful, my forever.<br>
+`,
+
+};
+
+/* BOX LOGIC */
+function setupBoxes(){
+  const today=new Date();today.setHours(0,0,0,0);
+  document.querySelectorAll(".box").forEach(box=>{
+    const date=box.dataset.date;
+    const unlocked=PREVIEW_MODE||today>=new Date(date);
+    box.querySelector(".lock").innerText=unlocked?"❤️🔓":"❤️🔒";
+    box.onclick=()=>{
+      if(!unlocked){
+        openModal("😏 Patience... Good things take time 💕");
+        return;
+      }
+      openModal(surprises[date]||"Your surprise ❤️", date==="2026-02-14");
+    };
+  });
+}
+
+/* ✨ FLOATING WORDS */
+function createFloatingWords(){
+  const words = ["Love","Hug","Kiss","💌","❤️","💗","💖","🌹","💐"];
+  for(let i=0;i<8;i++){
+    const el = document.createElement("div");
+    el.className = "word";
+    el.innerText = words[Math.floor(Math.random()*words.length)];
+    el.style.left = Math.random()*90+"%";
+    el.style.fontSize = (18 + Math.random()*20) + "px";
+    el.style.opacity = 0.6 + Math.random()*0.4;
+    el.style.animationDuration = (4 + Math.random()*6) + "s";
+    lockScreen.appendChild(el);
+    el.addEventListener("animationend", ()=> el.remove());
+  }
+  setTimeout(createFloatingWords, 1500);
+}
+createFloatingWords();
+
+/* MINI HEART-TAP GAME */
+let heartGameCount = 0;
+let heartGameInterval;
+
+function spawnHeart() {
+  const heart = document.createElement("div");
+  heart.className = "gameHeart";
+  heart.innerText = "💗";
+
+  heart.style.top = Math.random() * 70 + 10 + "vh";
+  heart.style.left = Math.random() * 80 + 10 + "vw";
+
+  heart.onclick = (e) => {
+    e.stopPropagation();
+    heartGameCount++;
+
+    const pop = document.createElement("div");
+    pop.className = "scorePop";
+    pop.innerText = "+1";
+    pop.style.top = heart.style.top;
+    pop.style.left = heart.style.left;
+    introScreen.appendChild(pop);
+    setTimeout(() => pop.remove(), 800);
+
+    heart.remove();
+
+    if (heartGameCount >= 3) {
+      heartGameCount = 0;
+      stopHeartGame();
+
+      // Show clickable button in modal
+      const buttonHTML = `<br><br><button onclick="document.getElementById('voiceNote').play()">▶️ Play Surprise Voice Note</button>`;
+      openModal("💖 You found the hidden message! 💖" + buttonHTML, true);
+    }
+  };
+
+  introScreen.appendChild(heart);
+  setTimeout(() => {
+    if (heart.parentElement) heart.remove();
+  }, 1500);
+}
+
+function startHeartGame() {
+  heartGameCount = 0;
+  heartGameInterval = setInterval(spawnHeart, 800);
+
+  introScreen.onclick = (e) => {
+    if (!e.target.classList.contains("gameHeart")) {
+      heartGameCount = 0;
+    }
+  };
+}
+
+function stopHeartGame() {
+  clearInterval(heartGameInterval);
+  introScreen.onclick = null;
+  document.querySelectorAll(".gameHeart").forEach((h) => h.remove());
+}
+</script>
+
+</body>
+</html>
