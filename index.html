@@ -461,15 +461,17 @@ my chaand, my beautiful, my forever.<br>
 
 /* BOX LOGIC */
 function setupBoxes(){
-  const today = new Date();
-  today.setHours(0,0,0,0);
+  const now = new Date();
+  const todayMonth = now.getMonth() + 1;
+  const todayDay = now.getDate();
 
   document.querySelectorAll(".box").forEach(box=>{
-    const [y, m, d] = box.dataset.date.split("-");
-    const boxDate = new Date(y, m - 1, d); // LOCAL date
-    boxDate.setHours(0,0,0,0);
+    const [y, m, d] = box.dataset.date.split("-").map(Number);
 
-    const unlocked = PREVIEW_MODE || today >= boxDate;
+    const unlocked =
+      PREVIEW_MODE ||
+      (todayMonth > m) ||
+      (todayMonth === m && todayDay >= d);
 
     box.querySelector(".lock").innerText = unlocked ? "❤️🔓" : "❤️🔒";
 
@@ -485,6 +487,7 @@ function setupBoxes(){
     };
   });
 }
+
 
 
 /* ✨ FLOATING WORDS */
@@ -568,4 +571,5 @@ function stopHeartGame() {
 </body>
 
 </html>
+
 
